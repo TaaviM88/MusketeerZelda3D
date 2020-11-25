@@ -17,12 +17,15 @@ public class PlayerMove : MonoBehaviour
     public float gravity = -9.81f;
 
     public Transform princeBody;
+
+    public int inputBufferCounter = 0;
+    public int inputBufferMax = 10;
     bool canMove = true;
     bool jumping = false;
     float horizontalX;
     float verticalY;
     Vector3 moveDirection;
-    Vector3 velocity;
+    public Vector3 velocity;
     // Start is called before the first frame update
     void Start()
     {
@@ -43,7 +46,10 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         CheckGround();
+
+        
 
         horizontalX = Input.GetAxis("Horizontal");
         verticalY = Input.GetAxis("Vertical");
@@ -53,11 +59,12 @@ public class PlayerMove : MonoBehaviour
         if(Input.GetButtonDown("Jump"))
         {
             CheckJump();
+            inputBufferCounter = 0;
         }
 
         FallDown();
 
-
+        velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
     }
 
     private void CheckGround()
@@ -65,6 +72,18 @@ public class PlayerMove : MonoBehaviour
         if(coll.onGround)
         {
             jumping = false;
+
+            if(velocity.y < 0)
+            {
+                velocity.y = 0;
+            }
+        }
+        //jump buffer
+        else if(!coll.onGround &&  velocity.y < 0 && inputBufferCounter < inputBufferMax)
+        {
+            
+            inputBufferCounter++;
+            CheckJump();
         }
     }
 
@@ -82,7 +101,8 @@ public class PlayerMove : MonoBehaviour
     private void DoJump()
     {
         //Animaatioon hyppy
-        velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+        velocity.y = Mathf.Sqrt(jumpForce * -3f * gravity);
+        inputBufferCounter = 0;
     }
 
     private void Move()
