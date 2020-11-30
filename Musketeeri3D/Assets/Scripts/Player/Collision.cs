@@ -25,6 +25,7 @@ public class Collision : MonoBehaviour
     {
         //Check if we are at ground
         onGround = Physics.CheckSphere(groundCheck.position, groundRadius, groundLayer);
+        Debug.Log(onGround);
         onCeiling = Physics.CheckSphere(ceilingCheck.position, ceilingRadius, groundLayer);
 
     }

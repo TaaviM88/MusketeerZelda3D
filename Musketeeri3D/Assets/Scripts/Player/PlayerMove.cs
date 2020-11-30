@@ -8,6 +8,7 @@ public class PlayerMove : MonoBehaviour
     PlayerEnumManager enums;
     CharacterController controller;
     Collision coll;
+    PlayerAnimator anime;
     public int side = 1;
 
 [   Header("Parameters")]
@@ -15,7 +16,8 @@ public class PlayerMove : MonoBehaviour
     public float jumpForce = 14;
     public float maxVelocity = 14;
     public float gravity = -9.81f;
-
+    //poistaa mäissä pomputtelun
+    public float antiBumpFactor = 0.75f;
     public Transform princeBody;
 
     public int inputBufferCounter = 0;
@@ -32,7 +34,7 @@ public class PlayerMove : MonoBehaviour
         controller = GetComponent<CharacterController>();
         enums = GetComponent<PlayerEnumManager>();
         coll = GetComponent<Collision>();
-
+        anime = GetComponent<PlayerAnimator>();
         if(side == 1)
         {
             enums.lookDir = PlayerLookDirection.Right;
@@ -101,13 +103,15 @@ public class PlayerMove : MonoBehaviour
     private void DoJump()
     {
         //Animaatioon hyppy
+        anime.animenator.SetTrigger("Jump");
         velocity.y = Mathf.Sqrt(jumpForce * -3f * gravity);
+
         inputBufferCounter = 0;
     }
 
     private void Move()
     {
-        moveDirection = transform.right * horizontalX * moveSpeed * Time.deltaTime;
+        moveDirection = (transform.right * horizontalX + transform.up * -antiBumpFactor ) * moveSpeed * Time.deltaTime;
         controller.Move(moveDirection);
 
         if(moveDirection.x > 0)
@@ -123,6 +127,10 @@ public class PlayerMove : MonoBehaviour
             enums.lookDir = PlayerLookDirection.Left;
             FlipCharacter(side);
         }
+
+        //HUOM! Movedirection.y ehkä väärin.
+        anime.SetInputAxis(horizontalX, verticalY, moveDirection.y);
+
     }
 
     private void FallDown()
