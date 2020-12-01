@@ -71,6 +71,8 @@ public class PlayerMove : MonoBehaviour
 
     private void CheckGround()
     {
+        anime.animenator.SetBool("OnGround", coll.onGround);
+
         if(coll.onGround)
         {
             jumping = false;

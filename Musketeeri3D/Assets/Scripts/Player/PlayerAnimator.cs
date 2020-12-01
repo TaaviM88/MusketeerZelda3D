@@ -16,7 +16,7 @@ public class PlayerAnimator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        animenator.SetBool("OnGround", coll.onGround);
+
     }
 
     public void SetInputAxis(float x, float y, float yVel)
