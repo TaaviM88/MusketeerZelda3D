@@ -149,7 +149,7 @@ public class PlayerMove : MonoBehaviour
 
         if(state)
         {
-            princeBody.localRotation = Quaternion.Euler(0, 220, 0f);
+            princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
         }
         else
         {
