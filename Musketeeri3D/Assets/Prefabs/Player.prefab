@@ -115,10 +115,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   side: 1
   moveSpeed: 5
-  jumpForce: 1.5
-  maxVelocity: 6
+  jumpForce: 8
+  maxVelocity: 7.97
   gravity: -9.81
-  antiBumpFactor: 0.25
+  antiBumpFactor: 0.75
   princeBody: {fileID: 4936940896478796019}
   inputBufferCounter: 0
   inputBufferMax: 10
@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba611bb55167d3c49b5a4ad4425c53cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fallMultiplayer: 2.5
-  lowJumpMultiplier: 5
+  fallMultiplayer: 5
+  lowJumpMultiplier: 1.5
 --- !u!114 &3631596863083476892
 MonoBehaviour:
   m_ObjectHideFlags: 0

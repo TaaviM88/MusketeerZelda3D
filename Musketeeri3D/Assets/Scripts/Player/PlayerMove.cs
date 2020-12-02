@@ -67,6 +67,8 @@ public class PlayerMove : MonoBehaviour
         FallDown();
 
         velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
+
+        //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
     }
 
     private void CheckGround()
@@ -106,8 +108,8 @@ public class PlayerMove : MonoBehaviour
     {
         //Animaatioon hyppy
         anime.animenator.SetTrigger("Jump");
-        velocity.y = Mathf.Sqrt(jumpForce * -3f * gravity);
-
+        velocity.y = Mathf.Sqrt(jumpForce * -1f * gravity);
+        //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
         inputBufferCounter = 0;
     }
 
@@ -131,7 +133,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         //HUOM! Movedirection.y ehkä väärin.
-        anime.SetInputAxis(horizontalX, verticalY, moveDirection.y);
+        anime.SetInputAxis(horizontalX, verticalY, velocity.y);
 
     }
 
