@@ -5,15 +5,20 @@ using UnityEngine;
 public class Collision : MonoBehaviour
 {
     [Header("Layers")]
-    public LayerMask groundLayer, enemyLayer, playerLayer;
+    public LayerMask groundLayer, enemyLayer, playerLayer, pushableLayer;
     [Space]
     public bool onGround, onWall, onRightWall, onLeftWall, onCeiling, stabHit;
     public int wallSide;
     [Header("Transforms")]
     
-    public Transform groundCheck, ceilingCheck;
+    public Transform groundCheck, ceilingCheck, rightCheck, leftCheck;
+    [Space]
     public float groundRadius = 0.1f;
     public float ceilingRadius = 0.1f;
+    [Space]
+    public float rightRadius = 0.1f;
+    public float leftRadius = 0.1f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,9 +30,11 @@ public class Collision : MonoBehaviour
     {
         //Check if we are at ground
         onGround = Physics.CheckSphere(groundCheck.position, groundRadius, groundLayer);
-        Debug.Log(onGround);
         onCeiling = Physics.CheckSphere(ceilingCheck.position, ceilingRadius, groundLayer);
 
+        //tsekataan osutaanko seinään. 
+        onRightWall =  Physics.CheckSphere(rightCheck.position, rightRadius, pushableLayer);
+        onLeftWall = Physics.CheckSphere(leftCheck.position, leftRadius, pushableLayer);
     }
 
     private void OnDrawGizmos()
@@ -36,5 +43,8 @@ public class Collision : MonoBehaviour
         //Ground check
         Gizmos.DrawWireSphere(groundCheck.position, groundRadius);
         Gizmos.DrawWireSphere(ceilingCheck.position, ceilingRadius);
+
+        Gizmos.DrawWireSphere(rightCheck.position, rightRadius);
+        Gizmos.DrawWireSphere(leftCheck.position, leftRadius);
     }
 }

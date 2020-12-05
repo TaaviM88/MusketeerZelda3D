@@ -13,6 +13,7 @@ public enum PlayerActionState
     Jump,
     Attack,
     PickingUp,
+    Pushing,
     CarryObj,
     LoweringObj,
     TakingDamage,
