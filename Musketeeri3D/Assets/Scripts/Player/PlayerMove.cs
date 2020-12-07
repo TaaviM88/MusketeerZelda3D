@@ -9,6 +9,7 @@ public class PlayerMove : MonoBehaviour
     CharacterController controller;
     Collision coll;
     PlayerAnimator anime;
+
     public int side = 1;
 
 [   Header("Parameters")]
@@ -16,7 +17,6 @@ public class PlayerMove : MonoBehaviour
     public float jumpForce = 14;
     public float maxVelocity = 14;
     public float gravity = -9.81f;
-    public float pushForce = 5f;
     //poistaa mäissä pomputtelun
     public float antiBumpFactor = 0.75f;
     public Transform princeBody;
@@ -36,6 +36,7 @@ public class PlayerMove : MonoBehaviour
         enums = GetComponent<PlayerEnumManager>();
         coll = GetComponent<Collision>();
         anime = GetComponent<PlayerAnimator>();
+
         if(side == 1)
         {
             enums.lookDir = PlayerLookDirection.Right;
@@ -58,7 +59,7 @@ public class PlayerMove : MonoBehaviour
         verticalY = Input.GetAxis("Vertical");
 
         Move();
-        
+
         if(Input.GetButtonDown("Jump"))
         {
             CheckJump();
@@ -71,6 +72,8 @@ public class PlayerMove : MonoBehaviour
 
         //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
     }
+
+
 
     private bool CheckWall()
     {
@@ -163,7 +166,7 @@ public class PlayerMove : MonoBehaviour
                 FlipCharacter(side);
             }
         }
-        enums.actionState = PlayerActionState.Walk;
+        //enums.actionState = PlayerActionState.Walk;
         //HUOM! Movedirection.y ehkä väärin.
         anime.SetInputAxis(horizontalX, verticalY, velocity.y);
 
@@ -177,42 +180,26 @@ public class PlayerMove : MonoBehaviour
 
     public void FlipCharacter(int lookSide)
     {
-        bool state = (side == 1) ? false : true;
-
-        if(state)
+        if(enums.actionState != PlayerActionState.Pushing)
         {
-            princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
-        }
-        else
-        {
-            princeBody.localRotation = Quaternion.Euler(0, 90, 0f);
+            bool state = (side == 1) ? false : true;
+
+            if (state)
+            {
+                princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
+            }
+            else
+            {
+                princeBody.localRotation = Quaternion.Euler(0, 90, 0f);
+            }
+
+            anime.animenator.SetTrigger("Flip");
         }
 
-        anime.animenator.SetTrigger("Flip");
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    public Vector3 GetMoveDirection()
     {
-        if(CheckWall() && hit.collider.tag == "Movable")
-        {
-            Debug.Log(hit.collider.gameObject.name);
-            Rigidbody rb = hit.collider.gameObject.GetComponent<Rigidbody>();
-
-            if(rb != null)
-            {
-                anime.animenator.SetBool("Pushing", true);
-                enums.actionState = PlayerActionState.Pushing;
-                if (enums.lookDir == PlayerLookDirection.Right)
-                {
-                    rb.AddForce((new Vector3( moveDirection.x * pushForce,0,0)));
-                }
-               
-                if(enums.lookDir == PlayerLookDirection.Left)
-                {
-                    rb.AddForce((new Vector3(moveDirection.x * pushForce, 0, 0)));
-                }
-             
-            }
-        }
+        return moveDirection;
     }
 }
