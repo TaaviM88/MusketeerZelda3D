@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 3631596863083476892}
   - component: {fileID: 3631596863083476864}
   - component: {fileID: 1439793355}
+  - component: {fileID: 1317304272}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -222,7 +223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 8448
   enemyLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -231,7 +232,7 @@ MonoBehaviour:
     m_Bits: 1024
   pushableLayer:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 8192
   onGround: 0
   onWall: 0
   onRightWall: 0
@@ -260,6 +261,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animenator: {fileID: 4830445865049718558}
+--- !u!114 &1317304272
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631596863083476894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8a51ae3a3fdf84392ee01e9d188790, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rbPushableObj: {fileID: 0}
+  pushForce: 10
+  rightDistance: 0.2
+  leftDistance: 0.2
+  rightCheck: {fileID: 8263306054659300635}
+  leftCheck: {fileID: 1663204725187233600}
+  pushableLayer:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &3631596863526290363
 GameObject:
   m_ObjectHideFlags: 0

@@ -937,32 +937,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1082121755}
   m_Mesh: {fileID: 8733429697405204941, guid: 603f240b5a603a745bebf06742c3bea6, type: 3}
---- !u!1 &1317304270 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3631596863083476894, guid: 95cd14408f770b34e8c64c84be964939,
-    type: 3}
-  m_PrefabInstance: {fileID: 3631596862726762899}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1317304272
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1317304270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae8a51ae3a3fdf84392ee01e9d188790, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pushForce: 10
-  rightRadius: 0.1
-  leftRadius: 0.1
-  rightCheck: {fileID: 2015686139}
-  leftCheck: {fileID: 1665139120}
-  pushableLayer:
-    serializedVersion: 2
-    m_Bits: 8192
 --- !u!4 &1325941488 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4194559446371219754, guid: ecc9c77d85c207b4da2ed0d7bddc2b76,
@@ -1177,12 +1151,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1664541337}
   m_Mesh: {fileID: -1149396583514764295, guid: 603f240b5a603a745bebf06742c3bea6, type: 3}
---- !u!4 &1665139120 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1663204725187233600, guid: 95cd14408f770b34e8c64c84be964939,
-    type: 3}
-  m_PrefabInstance: {fileID: 3631596862726762899}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1737096526
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,12 +1802,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2000157954}
   m_Mesh: {fileID: 1453043773871479701, guid: 603f240b5a603a745bebf06742c3bea6, type: 3}
---- !u!4 &2015686139 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8263306054659300635, guid: 95cd14408f770b34e8c64c84be964939,
-    type: 3}
-  m_PrefabInstance: {fileID: 3631596862726762899}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2042538099
 GameObject:
   m_ObjectHideFlags: 0
@@ -2784,17 +2746,17 @@ PrefabInstance:
     - target: {fileID: 2861771525031506305, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.07924444
+      value: 0.079244435
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525031506305, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000017460138
+      value: 0.000000016949043
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525031506305, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.000000004871723
+      value: -0.000000005293157
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525031506305, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
@@ -2839,17 +2801,17 @@ PrefabInstance:
     - target: {fileID: 2861771525409918005, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.000000010876441
+      value: -4.796163e-13
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525409918005, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.0000000017421583
+      value: -1.8048894e-12
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525409918005, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.000000014901159
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 2861771525409918005, guid: a197e0435e82dd24ba592683188ffd7d,
         type: 3}
@@ -3001,21 +2963,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3631596863083476864, guid: 95cd14408f770b34e8c64c84be964939,
-        type: 3}
-      propertyPath: pushableLayer.m_Bits
-      value: 8192
-      objectReference: {fileID: 0}
-    - target: {fileID: 3631596863083476864, guid: 95cd14408f770b34e8c64c84be964939,
-        type: 3}
-      propertyPath: groundLayer.m_Bits
-      value: 8448
-      objectReference: {fileID: 0}
-    - target: {fileID: 3631596863083476867, guid: 95cd14408f770b34e8c64c84be964939,
-        type: 3}
-      propertyPath: pushForce
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 3631596863083476893, guid: 95cd14408f770b34e8c64c84be964939,
         type: 3}
       propertyPath: m_LocalPosition.x
