@@ -6,12 +6,12 @@ using DG.Tweening;
 
 public class PlayerPush : MonoBehaviour
 {
-    public GameObject _rbPushableObj = null;
+    public GameObject pushableObj = null;
     PlayerAnimator anime;
     PlayerEnumManager enums;
     PlayerMove move;
     Collision coll;
-    public float pushForce = 10f;
+    //public float pushForce = 10f;
     public float rightDistance = 0.03f;
     public float leftDistance = 0.03f;
     public Transform rightCheck, leftCheck;
@@ -42,13 +42,11 @@ public class PlayerPush : MonoBehaviour
         }
 
         Push();
-
-        Debug.Log(_rbPushableObj);
     }
 
     public void Push()
     {
-        if(_rbPushableObj != null) // if(enums.actionState == PlayerActionState.Pushing)
+        if(pushableObj != null) // if(enums.actionState == PlayerActionState.Pushing)
         {
 
             enums.actionState = PlayerActionState.Pushing;
@@ -65,10 +63,10 @@ public class PlayerPush : MonoBehaviour
 
     private void ReleaseGrab()
     {
-        if(_rbPushableObj != null)
+        if(pushableObj != null)
         {
-            _rbPushableObj.transform.parent = null;
-            _rbPushableObj = null;
+            pushableObj.transform.parent = null;
+            pushableObj = null;
             
         }
         isPushing = false;
@@ -94,7 +92,7 @@ public class PlayerPush : MonoBehaviour
             {
 
                 //_rbPushableObj = hit.rigidbody;
-                _rbPushableObj = hit.transform.gameObject;
+                pushableObj = hit.transform.gameObject;
                 hit.transform.parent = transform;
             
             }
@@ -109,25 +107,14 @@ public class PlayerPush : MonoBehaviour
           if (Physics.Raycast(leftCheck.position, -Vector3.right, out hit, rightDistance, pushableLayer))
             {
                 // _rbPushableObj = hit.rigidbody;
-                _rbPushableObj = hit.transform.gameObject;
+                pushableObj = hit.transform.gameObject;
                 hit.transform.parent = transform;
-             
             }
             else
             {
                 enums.actionState = PlayerActionState.Idle;
-            }
-            
+            }   
         }
-
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.green;
-
-
-    //    Gizmos.DrawWireSphere(rightCheck.position, rightRadius);
-    //    Gizmos.DrawWireSphere(leftCheck.position, leftRadius);
-    }
 }
