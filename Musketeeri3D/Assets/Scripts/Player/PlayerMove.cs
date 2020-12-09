@@ -190,15 +190,17 @@ public class PlayerMove : MonoBehaviour
             {
                 princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
                 enums.lookDir = PlayerLookDirection.Left;
+                anime.animenator.SetFloat("LookDirection", -1);
             }
             else
             {
                 princeBody.localRotation = Quaternion.Euler(0, 90, 0f);
                 enums.lookDir = PlayerLookDirection.Right;
+                anime.animenator.SetFloat("LookDirection",1);
             }
 
             anime.animenator.SetTrigger("Flip");
-            anime.animenator.SetFloat("LookDirection",lookSide);
+           
         }
 
     }

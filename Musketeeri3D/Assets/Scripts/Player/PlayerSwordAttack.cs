@@ -7,6 +7,9 @@ public class PlayerSwordAttack : MonoBehaviour
 {
     public int attackPower = 1;
     public float attackCooldownMultiplayer = 2;
+    public float attackRange = 3f;
+    public Vector3 slashBoxSize = new Vector3(0, 0, 0);
+    public Transform rightStandAttackNode, leftStandAttackNode;
     
     bool canAttack = true;
     bool animeOn = false;
@@ -41,7 +44,7 @@ public class PlayerSwordAttack : MonoBehaviour
             return;
         }
 
-        if (Input.GetButtonDown("Fire2"))
+        if (Input.GetButtonDown("Fire1"))
         {
             TriggerAttack();
         }
@@ -52,6 +55,16 @@ public class PlayerSwordAttack : MonoBehaviour
         //Trigger animation:Done
         
         anime.animenator.SetTrigger("SwordSlash");
+        anime.animenator.SetFloat("AttackCombo", comboAttackCount);
+        
+        if(comboAttackCount  >= 3)
+        {
+            comboAttackCount = 0;
+        }
+        else
+        {
+            comboAttackCount++;
+        }
        
         //check if we hit anything
 
@@ -71,5 +84,31 @@ public class PlayerSwordAttack : MonoBehaviour
     {
         damageable?.Damage(attackPower);
         Debug.Log($"Attacing enemy:");
+    }
+
+
+    public void CheckSwordAttackCollision()
+    {
+        //RaycastHit[] hit;
+
+        //if(enums.lookDir == PlayerLookDirection.Right)
+        //{
+        //    if(Physics.BoxCast(rightStandAttackNode.position, slashBoxSize, Vector3.right, out hit,Quaternion.LookRotation(transform.position,Vector3.forward)))
+        //    {
+        //        for (int i = 0; i < length; i++)
+        //        {
+
+        //        }
+        //        hit[].collider.gameObject?.GetComponent<ItakeDamage<int>>();
+        //    }
+        //}
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+
+        Gizmos.DrawWireCube(rightStandAttackNode.position, slashBoxSize); 
+        Gizmos.DrawWireCube(leftStandAttackNode.position, slashBoxSize);
     }
 }
