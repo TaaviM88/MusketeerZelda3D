@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 public class PlayerSwordAttack : MonoBehaviour
 {
     public int attackPower = 1;
     public float attackCooldownMultiplayer = 2;
     public float attackRange = 3f;
-    public Vector3 slashBoxSize = new Vector3(0, 0, 0);
-    public Transform rightStandAttackNode, leftStandAttackNode;
+    public WeaponScript weapon;
+
+    //public Vector3 slashBoxSize = new Vector3(0, 0, 0);
+    //public Transform rightStandAttackNode, leftStandAttackNode;
     
     bool canAttack = true;
     bool animeOn = false;
@@ -33,7 +35,8 @@ public class PlayerSwordAttack : MonoBehaviour
 
         startTimeBtwAttack = attackCooldownMultiplayer;
         timeBTWAttack = attackCooldownMultiplayer;
-        
+
+        weapon?.onHit.AddListener((target) => DoDamage(target));
     }
 
     // Update is called once per frame
@@ -80,10 +83,12 @@ public class PlayerSwordAttack : MonoBehaviour
 
 
     //Do the damage
-    public void DoDamage(ItakeDamage<int> damageable)
+    public void DoDamage(Transform target)
     {
-        damageable?.Damage(attackPower);
-        Debug.Log($"Attacing enemy:");
+        //damageable?.Damage(attackPower);
+        //Debug.Log($"Attacing enemy:");
+        
+        target?.GetComponent<ItakeDamage<int>>().Damage(attackPower);
     }
 
 
@@ -104,11 +109,5 @@ public class PlayerSwordAttack : MonoBehaviour
         //}
     }
 
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-
-        Gizmos.DrawWireCube(rightStandAttackNode.position, slashBoxSize); 
-        Gizmos.DrawWireCube(leftStandAttackNode.position, slashBoxSize);
-    }
+  
 }
