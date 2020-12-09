@@ -31,12 +31,12 @@ public class PlayerPush : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Fire1") &&  coll.onGround)
+        if(Input.GetButton("Fire2") &&  coll.onGround)
         {
             Grab();
         }
 
-        if(Input.GetButtonUp("Fire1"))
+        if(Input.GetButtonUp("Fire2"))
         {
             ReleaseGrab();
         }

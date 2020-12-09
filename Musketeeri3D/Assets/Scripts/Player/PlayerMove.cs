@@ -72,6 +72,7 @@ public class PlayerMove : MonoBehaviour
         velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
 
         //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
+        
     }
 
 
@@ -183,18 +184,21 @@ public class PlayerMove : MonoBehaviour
     {
         if(enums.actionState != PlayerActionState.Pushing)
         {
-            bool state = (side == 1) ? false : true;
+            bool state = (lookSide == 1) ? false : true;
 
             if (state)
             {
                 princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
+                enums.lookDir = PlayerLookDirection.Left;
             }
             else
             {
                 princeBody.localRotation = Quaternion.Euler(0, 90, 0f);
+                enums.lookDir = PlayerLookDirection.Right;
             }
 
             anime.animenator.SetTrigger("Flip");
+            anime.animenator.SetFloat("LookDirection",lookSide);
         }
 
     }
