@@ -57,7 +57,7 @@ public class PlayerSwordAttack : MonoBehaviour
         anime.animenator.SetTrigger("SwordSlash");
         anime.animenator.SetFloat("AttackCombo", comboAttackCount);
         
-        if(comboAttackCount  >= 3)
+        if(comboAttackCount  >= 2)
         {
             comboAttackCount = 0;
         }
