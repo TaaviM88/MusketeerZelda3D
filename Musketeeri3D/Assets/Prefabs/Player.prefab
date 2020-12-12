@@ -168,6 +168,7 @@ GameObject:
   - component: {fileID: 1439793355}
   - component: {fileID: 1317304272}
   - component: {fileID: 6320663245545281563}
+  - component: {fileID: 1922848658}
   m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
@@ -238,7 +239,7 @@ MonoBehaviour:
   side: 1
   moveSpeed: 5
   jumpForce: 8
-  maxVelocity: 8
+  maxVelocity: 16
   gravity: -9.81
   antiBumpFactor: 0.75
   princeBody: {fileID: 4936940896478796019}
@@ -359,6 +360,31 @@ MonoBehaviour:
   attackCooldownMultiplayer: 2
   attackRange: 3
   weapon: {fileID: 865274163}
+--- !u!114 &1922848658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3631596863083476894}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 47702bf23992e484baa7f6259763aaa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  runAlongWallLayer:
+    serializedVersion: 2
+    m_Bits: 257
+  wallMaxDistance: 1
+  wallSpeedMultiplier: 4
+  minimumHeight: 0.25
+  maxAngleRoll: 20
+  normalizedAngleThreshold: 0.1
+  jumpDuration: 0.25
+  wallBouncing: 3
+  cameraTransitionDuration: 1
+  wallGravityDownForce: 0.1
+  useSprint: 0
 --- !u!1 &3631596863526290363
 GameObject:
   m_ObjectHideFlags: 0
@@ -2274,7 +2300,7 @@ PrefabInstance:
     - target: {fileID: 8567411705829278070, guid: f822a4f2b0d47df4893bce61c1c5cac1,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8567411705829278070, guid: f822a4f2b0d47df4893bce61c1c5cac1,
         type: 3}
@@ -2284,7 +2310,7 @@ PrefabInstance:
     - target: {fileID: 8567411705829278070, guid: f822a4f2b0d47df4893bce61c1c5cac1,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8567411705829278070, guid: f822a4f2b0d47df4893bce61c1c5cac1,
         type: 3}

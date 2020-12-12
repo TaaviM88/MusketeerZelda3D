@@ -30,6 +30,7 @@ public class PlayerMove : MonoBehaviour
     float verticalY;
     Vector3 moveDirection;
     public Vector3 velocity;
+    WallRun wallRun;
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +38,7 @@ public class PlayerMove : MonoBehaviour
         enums = GetComponent<PlayerEnumManager>();
         coll = GetComponent<Collision>();
         anime = GetComponent<PlayerAnimator>();
-
+        wallRun = GetComponent<WallRun>();
         if(side == 1)
         {
             enums.lookDir = PlayerLookDirection.Right;
@@ -72,7 +73,11 @@ public class PlayerMove : MonoBehaviour
         velocity.y = Mathf.Clamp(velocity.y, -maxVelocity, maxVelocity);
 
         //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
-        
+        if(transform.position.z != 0)
+        {
+           // Debug.Log("lul, melkein lipsahdettiin pois Z:lta");
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+        }
     }
 
 
@@ -111,21 +116,21 @@ public class PlayerMove : MonoBehaviour
 
             if(velocity.y < 0)
             {
-                velocity.y = 0;
+                velocity = Vector3.zero;
             }
         }
         //jump buffer
-        else if(!coll.onGround &&  velocity.y < 0 && inputBufferCounter < inputBufferMax)
-        {
+        //else if(!coll.onGround &&  velocity.y < 0 && inputBufferCounter < inputBufferMax)
+        //{
             
-            inputBufferCounter++;
-            CheckJump();
-        }
+        //    inputBufferCounter++;
+        //    CheckJump();
+        //}
     }
 
     private void CheckJump()
     {
-        if(!coll.onGround)
+        if(!coll.onGround && !wallRun.IsWallRunning())
         {
             jumping = true;
             return;
@@ -136,11 +141,24 @@ public class PlayerMove : MonoBehaviour
 
     private void DoJump()
     {
-        //Animaatioon hyppy
-        anime.animenator.SetTrigger("Jump");
-        velocity.y = Mathf.Sqrt(jumpForce * -1f * gravity);
-        //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
-        inputBufferCounter = 0;
+        if(coll.onGround && !wallRun.IsWallRunning())
+        {
+            //Animaatioon hyppy
+            anime.animenator.SetTrigger("Jump");
+            velocity.y = Mathf.Sqrt(jumpForce * -1f * gravity);
+            //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
+            inputBufferCounter = 0;
+        }
+        
+        if(wallRun.IsWallRunning())
+        {
+            //Animaatioon hyppy
+            //anime.animenator.SetTrigger("Jump");
+            velocity.y = Mathf.Sqrt(jumpForce * -2f * gravity);
+            //anime.animenator.SetFloat("VerticalVelocity", velocity.y);
+            inputBufferCounter = 0;
+        }
+
     }
 
     private void Move()
@@ -176,33 +194,46 @@ public class PlayerMove : MonoBehaviour
 
     private void FallDown()
     {
-        velocity.y += gravity * Time.deltaTime;
-        controller.Move(velocity * Time.deltaTime);
+        if(!wallRun.IsWallRunning())
+        {
+            velocity.y += gravity * Time.deltaTime;
+            controller.Move(velocity * Time.deltaTime);
+        }
+        else
+        {
+            controller.Move(velocity * Time.deltaTime);
+        }
+      
     }
 
     public void FlipCharacter(int lookSide)
     {
-        if(enums.actionState != PlayerActionState.Pushing)
+        if (enums.actionState != PlayerActionState.Pushing)
         {
             bool state = (lookSide == 1) ? false : true;
 
             if (state)
             {
-                princeBody.localRotation = Quaternion.Euler(0, 270, 0f);
+                princeBody.localRotation = Quaternion.Euler(princeBody.localEulerAngles.x, 270, princeBody.localEulerAngles.z);
                 enums.lookDir = PlayerLookDirection.Left;
                 anime.animenator.SetFloat("LookDirection", -1);
             }
             else
             {
-                princeBody.localRotation = Quaternion.Euler(0, 90, 0f);
+                princeBody.localRotation = Quaternion.Euler(princeBody.localEulerAngles.x, 90, princeBody.localEulerAngles.z);
                 enums.lookDir = PlayerLookDirection.Right;
-                anime.animenator.SetFloat("LookDirection",1);
+                anime.animenator.SetFloat("LookDirection", 1);
             }
 
             anime.animenator.SetTrigger("Flip");
-           
-        }
 
+        }
+           
+    }
+
+    public Transform GetPrinceBody()
+    {
+        return princeBody;
     }
 
     public Vector3 GetMoveDirection()
