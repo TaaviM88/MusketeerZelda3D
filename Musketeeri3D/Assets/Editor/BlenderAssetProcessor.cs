@@ -13,7 +13,7 @@ public class BlenderAssetProcessor : AssetPostprocessor
         //only perform corrections with blender files
 
         ModelImporter importer = assetImporter as ModelImporter;
-        if (Path.GetExtension(importer.assetPath) == ".blend")
+        if (Path.GetExtension(importer.assetPath) == ".fbx")
         {
             RotateObject(obj.transform);
         }
