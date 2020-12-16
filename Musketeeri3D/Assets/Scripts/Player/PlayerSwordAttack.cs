@@ -49,7 +49,12 @@ public class PlayerSwordAttack : MonoBehaviour
 
         if (Input.GetButtonDown("Fire1"))
         {
-            TriggerAttack();
+            if (canAttack)
+            {
+                TriggerAttack();
+                canAttack = false;
+            }
+            
         }
     }
 
@@ -59,7 +64,7 @@ public class PlayerSwordAttack : MonoBehaviour
         
         anime.animenator.SetTrigger("SwordSlash");
         anime.animenator.SetFloat("AttackCombo", comboAttackCount);
-        
+       
         if(comboAttackCount  >= 2)
         {
             comboAttackCount = 0;
@@ -109,5 +114,9 @@ public class PlayerSwordAttack : MonoBehaviour
         //}
     }
 
+    public void EndSwordAttackCooldown()
+    {
+        canAttack = true;
+    }
   
 }

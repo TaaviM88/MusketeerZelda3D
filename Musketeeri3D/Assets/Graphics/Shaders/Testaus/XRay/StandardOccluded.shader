@@ -1,78 +1,155 @@
-﻿// Upgrade NOTE: replaced 'mul(UNITY_MATRIX_MVP,*)' with 'UnityObjectToClipPos(*)'
-
-Shader "Custom/StandardOccluded"
+﻿Shader "Custom/Geometry/Wireframe"
 {
-    Properties {
-        _Color ("Color", Color) = (1,1,1,1)
-        _MainTex ("Albedo (RGB)", 2D) = "white" {}
-        _Glossiness ("Smoothness", Range(0,1)) = 0.5
-        _Metallic ("Metallic", Range(0,1)) = 0.0
-        _OccludedColor("Occluded Color", Color) = (1,1,1,1)
+    Properties
+    {
+        [PowerSlider(3.0)]
+        _WireframeVal ("Wireframe width", Range(0., 0.5)) = 0.05
+        _FrontColor ("Front color", color) = (1., 1., 1., 1.)
+        _BackColor ("Back color", color) = (1., 1., 1., 1.)
+        [Toggle] _RemoveDiag("Remove diagonals?", Float) = 0.
     }
-    SubShader {
-   
+    SubShader
+    {
+        Tags { "Queue"="Geometry" "RenderType"="Opaque" }
+       
         Pass
         {
-            Tags { "Queue"="Geometry-1" }
-            ZTest Greater
-            ZWrite Off
-            Blend SrcAlpha OneMinusSrcAlpha
+            Cull Front
             CGPROGRAM
-            #pragma vertex vert            
+            #pragma vertex vert
             #pragma fragment frag
-            #pragma fragmentoption ARB_precision_hint_fastest
+            #pragma geometry geom
  
-            half4 _OccludedColor;
+            // Change "shader_feature" with "pragma_compile" if you want set this keyword from c# code
+            #pragma shader_feature __ _REMOVEDIAG_ON
  
-            float4 vert(float4 pos : POSITION) : SV_POSITION
-            {
-                float4 viewPos = UnityObjectToClipPos(pos);
-                return viewPos;
+            #include "UnityCG.cginc"
+ 
+            struct v2g {
+                float4 worldPos : SV_POSITION;
+            };
+ 
+            struct g2f {
+                float4 pos : SV_POSITION;
+                float3 bary : TEXCOORD0;
+            };
+ 
+            v2g vert(appdata_base v) {
+                v2g o;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                return o;
             }
  
-                half4 frag(float4 pos : SV_POSITION) : COLOR
-            {
-                return _OccludedColor;
+            [maxvertexcount(3)]
+            void geom(triangle v2g IN[3], inout TriangleStream<g2f> triStream) {
+                float3 param = float3(0., 0., 0.);
+ 
+                #if _REMOVEDIAG_ON
+                float EdgeA = length(IN[0].worldPos - IN[1].worldPos);
+                float EdgeB = length(IN[1].worldPos - IN[2].worldPos);
+                float EdgeC = length(IN[2].worldPos - IN[0].worldPos);
+               
+                if(EdgeA > EdgeB && EdgeA > EdgeC)
+                    param.y = 1.;
+                else if (EdgeB > EdgeC && EdgeB > EdgeA)
+                    param.x = 1.;
+                else
+                    param.z = 1.;
+                #endif
+ 
+                g2f o;
+                o.pos = mul(UNITY_MATRIX_VP, IN[0].worldPos);
+                o.bary = float3(1., 0., 0.) + param;
+                triStream.Append(o);
+                o.pos = mul(UNITY_MATRIX_VP, IN[1].worldPos);
+                o.bary = float3(0., 0., 1.) + param;
+                triStream.Append(o);
+                o.pos = mul(UNITY_MATRIX_VP, IN[2].worldPos);
+                o.bary = float3(0., 1., 0.) + param;
+                triStream.Append(o);
             }
-            
-     
+ 
+            float _WireframeVal;
+            fixed4 _BackColor;
+ 
+            fixed4 frag(g2f i) : SV_Target {
+            if(!any(bool3(i.bary.x < _WireframeVal, i.bary.y < _WireframeVal, i.bary.z < _WireframeVal)))
+                 discard;
+ 
+                return _BackColor;
+            }
+ 
             ENDCG
         }
  
-        Tags { "RenderType"="Opaque" "Queue"="Geometry+1"}
-        LOD 200
-        ZWrite On
-        ZTest LEqual
-       
-        CGPROGRAM
-        // Physically based Standard lighting model, and enable shadows on all light types
-        #pragma surface surf Standard fullforwardshadows
+        Pass
+        {
+            Cull Back
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma geometry geom
  
-        // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
+            // Change "shader_feature" with "pragma_compile" if you want set this keyword from c# code
+            #pragma shader_feature __ _REMOVEDIAG_ON
  
-        sampler2D _MainTex;
+            #include "UnityCG.cginc"
  
-        struct Input {
-            float2 uv_MainTex;
-        };
+            struct v2g {
+                float4 worldPos : SV_POSITION;
+            };
  
-        half _Glossiness;
-        half _Metallic;
-        fixed4 _Color;
-
-
-            //void surf (Input IN, inout SurfaceOutputStandard o) {
-            //    // Albedo comes from a texture tinted by color
-            //    fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-            //    o.Albedo = c.rgb;
-            //    // Metallic and smoothness come from slider variables
-            //    o.Metallic = _Metallic;
-            //    o.Smoothness = _Glossiness;
-            //    o.Alpha = c.a;
-            //}
-
-        ENDCG
+            struct g2f {
+                float4 pos : SV_POSITION;
+                float3 bary : TEXCOORD0;
+            };
+ 
+            v2g vert(appdata_base v) {
+                v2g o;
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                return o;
+            }
+ 
+            [maxvertexcount(3)]
+            void geom(triangle v2g IN[3], inout TriangleStream<g2f> triStream) {
+                float3 param = float3(0., 0., 0.);
+ 
+                #if _REMOVEDIAG_ON
+                float EdgeA = length(IN[0].worldPos - IN[1].worldPos);
+                float EdgeB = length(IN[1].worldPos - IN[2].worldPos);
+                float EdgeC = length(IN[2].worldPos - IN[0].worldPos);
+               
+                if(EdgeA > EdgeB && EdgeA > EdgeC)
+                    param.y = 1.;
+                else if (EdgeB > EdgeC && EdgeB > EdgeA)
+                    param.x = 1.;
+                else
+                    param.z = 1.;
+                #endif
+ 
+                g2f o;
+                o.pos = mul(UNITY_MATRIX_VP, IN[0].worldPos);
+                o.bary = float3(1., 0., 0.) + param;
+                triStream.Append(o);
+                o.pos = mul(UNITY_MATRIX_VP, IN[1].worldPos);
+                o.bary = float3(0., 0., 1.) + param;
+                triStream.Append(o);
+                o.pos = mul(UNITY_MATRIX_VP, IN[2].worldPos);
+                o.bary = float3(0., 1., 0.) + param;
+                triStream.Append(o);
+            }
+ 
+            float _WireframeVal;
+            fixed4 _FrontColor;
+ 
+            fixed4 frag(g2f i) : SV_Target {
+            if(!any(bool3(i.bary.x <= _WireframeVal, i.bary.y <= _WireframeVal, i.bary.z <= _WireframeVal)))
+                 discard;
+ 
+                return _FrontColor;
+            }
+ 
+            ENDCG
+        }
     }
-    FallBack "Diffuse"
 }
