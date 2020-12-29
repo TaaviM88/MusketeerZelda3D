@@ -19,6 +19,11 @@ public enum PlayerActionState
     TakingDamage,
     FreezeAction
 }
+public enum PlayerThrowState
+{
+    Idle,
+    Throwing,
+}
 #endregion
 public enum GameState
 {

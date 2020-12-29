@@ -12,7 +12,7 @@ public class PlayerSwordAttack : MonoBehaviour
 
     //public Vector3 slashBoxSize = new Vector3(0, 0, 0);
     //public Transform rightStandAttackNode, leftStandAttackNode;
-    
+    public bool canAttackEditor = true;
     bool canAttack = true;
     bool animeOn = false;
     float timeBTWAttack = 0;
@@ -42,7 +42,7 @@ public class PlayerSwordAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!canAttack)
+        if (!canAttack || !canAttackEditor)
         {
             return;
         }

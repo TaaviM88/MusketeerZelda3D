@@ -24,11 +24,11 @@ public class PlayerMove : MonoBehaviour
 
     public int inputBufferCounter = 0;
     public int inputBufferMax = 10;
-    bool canMove = true;
+    public  bool canMove { get; set; }
     bool jumping = false;
-    float horizontalX;
-    float verticalY;
-    Vector3 moveDirection;
+    public float horizontalX { get; private set;}
+    public float verticalY { get; private set;}
+     public Vector3 moveDirection { get; private set; }
     public Vector3 velocity;
     WallRun wallRun;
     // Start is called before the first frame update
@@ -163,6 +163,10 @@ public class PlayerMove : MonoBehaviour
 
     private void Move()
     {
+        if(!canMove)
+        {
+            return;
+        }
         moveDirection = (transform.right * horizontalX + transform.up * -antiBumpFactor);
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
 
@@ -239,5 +243,15 @@ public class PlayerMove : MonoBehaviour
     public Vector3 GetMoveDirection()
     {
         return moveDirection;
+    }
+
+    public void SetPlayerCanMove(bool b)
+    {
+        canMove = b;
+    }
+
+    public bool GetPlayerCanMove()
+    {
+        return canMove;
     }
 }
